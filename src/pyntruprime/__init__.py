@@ -54,6 +54,14 @@ class _NTRU:
     def sklen(self) -> int:
         return self._SECRETKEYBYTES
 
+    @property
+    def clen(self) -> int:
+        return self._CIPHERTEXTBYTES
+
+    @property
+    def klen(self) -> int:
+        return self._BYTES
+
     def keypair(self) -> Tuple[bytes, bytes]:
         """Randomly generates a Ntruprime secret key and its corresponding
         public key.
