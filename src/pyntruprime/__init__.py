@@ -29,9 +29,9 @@ if not _lib._name:
 class _NTRU:
     def __init__(self) -> None:
         self._PARAMS = "sntrup761"
-        self.PUBLICKEYBYTES: int = 1218
-        self.SECRETKEYBYTES: int = 1600
-        self.CIPHERTEXTBYTES: int = 1047
+        self.PUBLICKEYBYTES: int = 1158
+        self.SECRETKEYBYTES: int = 1763
+        self.CIPHERTEXTBYTES: int = 1039
         self.BYTES: int = 32
 
         self._c_keypair = getattr(_lib, f"ntruprime_kem_sntrup761_keypair")
