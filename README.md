@@ -1,4 +1,4 @@
-# pynutrprime
+# pyntruprime
 A Python wrapper for the libntruprime microlibrary
 
 # Installation
