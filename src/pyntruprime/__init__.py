@@ -29,10 +29,10 @@ if not _lib._name:
 class _NTRU:
     def __init__(self) -> None:
         self._PARAMS = "sntrup761"
-        self.PUBLICKEYBYTES: int = 1158
-        self.SECRETKEYBYTES: int = 1763
-        self.CIPHERTEXTBYTES: int = 1039
-        self.BYTES: int = 32
+        self._PUBLICKEYBYTES: int = 1158
+        self._SECRETKEYBYTES: int = 1763
+        self._CIPHERTEXTBYTES: int = 1039
+        self._BYTES: int = 32
 
         self._c_keypair = getattr(_lib, f"ntruprime_kem_sntrup761_keypair")
         self._c_keypair.argtypes = [c_char_p, c_char_p]
@@ -46,6 +46,14 @@ class _NTRU:
         self._c_dec.argtypes = [c_char_p, c_char_p, c_char_p]
         self._c_dec.restype = None
 
+    @property
+    def pklen(self) -> int:
+        return self._PUBLICKEYBYTES
+
+    @property
+    def sklen(self) -> int:
+        return self._SECRETKEYBYTES
+
     def keypair(self) -> Tuple[bytes, bytes]:
         """Randomly generates a Ntruprime secret key and its corresponding
         public key.
@@ -56,8 +64,8 @@ class _NTRU:
 
         """
 
-        sk = create_string_buffer(self.SECRETKEYBYTES)
-        pk = create_string_buffer(self.PUBLICKEYBYTES)
+        sk = create_string_buffer(self._SECRETKEYBYTES)
+        pk = create_string_buffer(self._PUBLICKEYBYTES)
         self._c_keypair(pk, sk)
         return pk.raw, sk.raw
 
@@ -73,11 +81,11 @@ class _NTRU:
         """
         if not isinstance(pk, bytes):
             raise TypeError("public key must be bytes")
-        if len(pk) != self.PUBLICKEYBYTES:
+        if len(pk) != self._PUBLICKEYBYTES:
             raise ValueError("invalid public key length")
 
-        c = create_string_buffer(self.CIPHERTEXTBYTES)
-        k = create_string_buffer(self.BYTES)
+        c = create_string_buffer(self._CIPHERTEXTBYTES)
+        k = create_string_buffer(self._BYTES)
         pk_arr = create_string_buffer(pk)
         self._c_enc(c, k, pk_arr)
         return c.raw, k.raw
@@ -96,14 +104,14 @@ class _NTRU:
 
         if not (isinstance(c, bytes) and isinstance(sk, bytes)):
             raise TypeError("c and sk must be bytes")
-        if not len(c) == self.CIPHERTEXTBYTES:
+        if not len(c) == self._CIPHERTEXTBYTES:
             raise ValueError("c is wrong length")
-        if not len(sk) == self.SECRETKEYBYTES:
+        if not len(sk) == self._SECRETKEYBYTES:
             raise ValueError("sk is wrong length")
 
         c_arr = create_string_buffer(c)
         sk_arr = create_string_buffer(sk)
-        k = create_string_buffer(self.BYTES)
+        k = create_string_buffer(self._BYTES)
         self._c_dec(k, c_arr, sk_arr)
         return k.raw
 
