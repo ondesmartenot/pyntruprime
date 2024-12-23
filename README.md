@@ -4,7 +4,7 @@ A Python wrapper for the libntruprime microlibrary
 # Installation
 ## Dependencies
 pyntruprime depends only on libntruprime (which also depends on libcpucycles and
-librandombytes), available [here](https://lib.ntruprime.org)
+librandombytes), available [here](https://libntruprime.cr.yp.to/)
 
 # API
 ## Instantiated parameters
