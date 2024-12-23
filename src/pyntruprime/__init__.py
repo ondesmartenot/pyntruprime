@@ -9,18 +9,9 @@ from ctypes import (
 )
 from typing import Tuple
 
-_librb = CDLL(
-    "/usr/local/lib/librandombytes.so"
-    or util.find_library("randombytes")
-    or util.find_library("librandombytes"),
-    mode=RTLD_GLOBAL,
-)
+_librb = CDLL(util.find_library("randombytes"),mode=RTLD_GLOBAL)
 
-_lib = CDLL(
-    "/usr/local/lib/libntruprime.so"
-    or util.find_library("ntruprime")
-    or util.find_library("libntruprime")
-)
+_lib = CDLL(util.find_library("ntruprime"))
 
 if not _lib._name:
     raise ValueError("Unable to find libntruprime")
